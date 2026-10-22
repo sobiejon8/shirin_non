@@ -6,10 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
 
-# Loyiha ildiz papkasini aniqlash
 BASE_DIR = Path(__file__).resolve().parent
 
-# bot.py faylidan import
 from bot import bot, dp
 
 @asynccontextmanager
@@ -17,13 +15,11 @@ async def lifespan(app: FastAPI):
     # Bot pollingni orqa fonda yurgizish
     polling_task = asyncio.create_task(dp.start_polling(bot))
     yield
-    # Server to'xtaganda bot seansini yopish
     polling_task.cancel()
     await bot.session.close()
 
 app = FastAPI(lifespan=lifespan)
 
-# Statik va Templates papkalarini ulash
 static_dir = BASE_DIR / "static"
 templates_dir = BASE_DIR / "templates"
 
@@ -34,7 +30,8 @@ templates = Jinja2Templates(directory=str(templates_dir))
 
 @app.get("/")
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Starlette yangi versiyasi uchun to'g'ri TemplateResponse chaqiruvi
+    return templates.TemplateResponse(request, "index.html")
 
 if __name__ == "__main__":
     import uvicorn
