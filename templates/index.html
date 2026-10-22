@@ -3,39 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shirin Non - Buyurtma berish</title>
+    <title>Shirin Non Sexi</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .card-3d {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 p-4 pb-24 text-gray-800">
-    <h1 class="text-2xl font-bold text-center text-amber-700 mb-4">🍞 Shirin Non Sexi</h1>
+<body class="p-4 pb-28">
+
+    <div class="text-center my-4">
+        <h1 class="text-2xl font-extrabold text-amber-400 tracking-wide">🍞 Shirin Non Sexi</h1>
+        <p class="text-xs text-gray-400 mt-1">Sifatli va mazali non mahsulotlari</p>
+    </div>
 
     <!-- Mahsulotlar Ro'yxati -->
-    <div id="products-list" class="space-y-4 mb-6"></div>
+    <div class="space-y-4">
 
-    <!-- Buyurtma ma'lumotlari -->
-    <div class="bg-white p-4 rounded-xl shadow space-y-3">
+        <!-- Borka Katta -->
+        <div class="card-3d p-3 flex items-center space-x-3">
+            <img src="/static/images/borka.jpg" onerror="this.src='https://via.placeholder.com/80?text=Borka'" class="w-20 h-20 object-cover rounded-xl border border-amber-500/30">
+            <div class="flex-1">
+                <h3 class="font-bold text-base text-gray-100">Borka (katta)</h3>
+                <p class="text-amber-400 font-semibold text-sm">3 000 so'm</p>
+                <div class="mt-2 flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Soni:</span>
+                    <input type="number" min="0" value="0" data-price="3000" data-name="Borka (katta)" oninput="calculateTotal()" class="count-input w-24 bg-slate-900 border border-amber-500/40 rounded-lg text-center py-1.5 text-white font-bold text-sm focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+        <!-- Kichik Borka -->
+        <div class="card-3d p-3 flex items-center space-x-3">
+            <img src="/static/images/borka.jpg" onerror="this.src='https://via.placeholder.com/80?text=Kichik+Borka'" class="w-20 h-20 object-cover rounded-xl border border-amber-500/30">
+            <div class="flex-1">
+                <h3 class="font-bold text-base text-gray-100">Kichik borka</h3>
+                <p class="text-amber-400 font-semibold text-sm">2 800 so'm</p>
+                <div class="mt-2 flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Soni:</span>
+                    <input type="number" min="0" value="0" data-price="2800" data-name="Kichik borka" oninput="calculateTotal()" class="count-input w-24 bg-slate-900 border border-amber-500/40 rounded-lg text-center py-1.5 text-white font-bold text-sm focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+        <!-- Kekis -->
+        <div class="card-3d p-3 flex items-center space-x-3">
+            <img src="/static/images/kekis.jpg" onerror="this.src='https://via.placeholder.com/80?text=Kekis'" class="w-20 h-20 object-cover rounded-xl border border-amber-500/30">
+            <div class="flex-1">
+                <h3 class="font-bold text-base text-gray-100">Kekis (1 salafan)</h3>
+                <p class="text-amber-400 font-semibold text-sm">15 000 so'm</p>
+                <div class="mt-2 flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Soni:</span>
+                    <input type="number" min="0" value="0" data-price="15000" data-name="Kekis (1 salafan)" oninput="calculateTotal()" class="count-input w-24 bg-slate-900 border border-amber-500/40 rounded-lg text-center py-1.5 text-white font-bold text-sm focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+        <!-- Qora Borka -->
+        <div class="card-3d p-3 flex items-center space-x-3">
+            <img src="/static/images/borka.jpg" onerror="this.src='https://via.placeholder.com/80?text=Qora+Borka'" class="w-20 h-20 object-cover rounded-xl border border-amber-500/30">
+            <div class="flex-1">
+                <h3 class="font-bold text-base text-gray-100">Qora borka noni</h3>
+                <p class="text-amber-400 font-semibold text-sm">7 000 so'm</p>
+                <div class="mt-2 flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Soni:</span>
+                    <input type="number" min="0" value="0" data-price="7000" data-name="Qora borka noni" oninput="calculateTotal()" class="count-input w-24 bg-slate-900 border border-amber-500/40 rounded-lg text-center py-1.5 text-white font-bold text-sm focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mijoz Ma'lumotlari Formasi -->
+    <div class="card-3d p-4 mt-6 space-y-3">
         <div>
-            <label class="block text-sm font-medium mb-1">Mijoz / Do'kon nomi:</label>
-            <input type="text" id="customer_name" placeholder='Masalan: Do`kon "Yulduz"' class="w-full border p-2 rounded-lg text-sm" required>
+            <label class="block text-xs font-medium text-gray-400 mb-1">Mijoz / Do'kon nomi:</label>
+            <input type="text" id="client_name" placeholder="Masalan: Elnur do'koni" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Telefon raqam:</label>
-            <input type="tel" id="phone_number" placeholder="+998901234567" class="w-full border p-2 rounded-lg text-sm" required>
+            <label class="block text-xs font-medium text-gray-400 mb-1">Telefon raqam:</label>
+            <input type="tel" id="client_phone" placeholder="+998 90 123 45 67" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">⏰ Soat nechiga kerak?</label>
-            <input type="time" id="requested_time" class="w-full border p-2 rounded-lg text-sm font-bold text-amber-700" required>
+            <label class="block text-xs font-medium text-gray-400 mb-1">⏰ Soat nechiga kerak?</label>
+            <input type="text" id="delivery_time" placeholder="Masalan: Soat 07:30 gacha" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
         </div>
     </div>
 
-    <!-- Tasdiqlash Tugmasi -->
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t flex justify-between items-center shadow-lg">
+    <!-- Pastki Jami Summa va Buyurtma Tugmasi -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 flex items-center justify-between z-50">
         <div>
-            <span class="text-xs text-gray-500">Jami summa:</span>
-            <div id="total-price" class="text-xl font-extrabold text-amber-600">0 so'm</div>
+            <span class="text-xs text-gray-400 block">Jami summa:</span>
+            <span id="total_price" class="text-lg font-bold text-amber-400">0 so'm</span>
         </div>
-        <button onclick="submitOrder()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-3 rounded-xl shadow">
+        <button onclick="sendOrder()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-amber-500/20">
             Buyurtma berish 🚀
         </button>
     </div>
@@ -44,92 +116,59 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let products = [];
-        let quantities = {};
-
-        async function fetchProducts() {
-            const res = await fetch('/api/products');
-            products = await res.json();
-            renderProducts();
-        }
-
-        function renderProducts() {
-            const container = document.getElementById('products-list');
-            container.innerHTML = '';
-            products.forEach(p => {
-                quantities[p.id] = quantities[p.id] || 0;
-                container.innerHTML += `
-                    <div class="bg-white p-3 rounded-xl shadow flex items-center justify-between">
-                        <img src="${p.image_url || 'https://via.placeholder.com/80'}" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1 ml-3">
-                            <h3 class="font-bold text-base text-gray-900">${p.title}</h3>
-                            <p class="text-amber-600 font-semibold text-sm">${p.price.toLocaleString()} so'm</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="changeQty(${p.id}, -5)" class="bg-gray-200 text-xl font-bold px-3 py-1 rounded-lg">-</button>
-                            <span id="qty-${p.id}" class="font-bold min-w-[24px] text-center">${quantities[p.id]}</span>
-                            <button onclick="changeQty(${p.id}, 5)" class="bg-amber-600 text-white text-xl font-bold px-3 py-1 rounded-lg">+</button>
-                        </div>
-                    </div>
-                `;
-            });
-            updateTotal();
-        }
-
-        function changeQty(id, delta) {
-            quantities[id] = Math.max(0, (quantities[id] || 0) + delta);
-            document.getElementById(`qty-${id}`).innerText = quantities[id];
-            updateTotal();
-        }
-
-        function updateTotal() {
+        function calculateTotal() {
             let total = 0;
-            products.forEach(p => {
-                total += (quantities[p.id] || 0) * p.price;
+            document.querySelectorAll('.count-input').forEach(input => {
+                const count = parseInt(input.value) || 0;
+                const price = parseInt(input.dataset.price);
+                total += count * price;
             });
-            document.getElementById('total-price').innerText = total.toLocaleString() + " so'm";
+            document.getElementById('total_price').innerText = total.toLocaleString('uz-UZ') + " so'm";
         }
 
-        async function submitOrder() {
-            const customer_name = document.getElementById('customer_name').value.trim();
-            const phone_number = document.getElementById('phone_number').value.trim();
-            const requested_time = document.getElementById('requested_time').value;
+        function sendOrder() {
+            const name = document.getElementById('client_name').value.trim();
+            const phone = document.getElementById('client_phone').value.trim();
+            const time = document.getElementById('delivery_time').value.trim();
 
-            if (!customer_name || !phone_number || !requested_time) {
-                alert("Iltimos, barcha maydonlarni to'ldiring!");
+            if(!name || !phone) {
+                alert("Iltimos, ismingiz va telefon raqamingizni kiriting!");
                 return;
             }
 
-            const items = products.filter(p => quantities[p.id] > 0).map(p => ({
-                product_id: p.id,
-                quantity: quantities[p.id]
-            }));
+            let items = [];
+            let totalSum = 0;
 
-            if (items.length === 0) {
-                alert("Kamida bitta mahsulot tanlang!");
+            document.querySelectorAll('.count-input').forEach(input => {
+                const count = parseInt(input.value) || 0;
+                if(count > 0) {
+                    const itemName = input.dataset.name;
+                    const price = parseInt(input.dataset.price);
+                    items.push({
+                        name: itemName,
+                        count: count,
+                        price: price,
+                        sum: count * price
+                    });
+                    totalSum += count * price;
+                }
+            });
+
+            if(items.length === 0) {
+                alert("Kamida bitta mahsulot miqdorini kiriting!");
                 return;
             }
 
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customer_name,
-                    phone_number,
-                    requested_time,
-                    items
-                })
-            });
+            const data = {
+                client_name: name,
+                phone: phone,
+                delivery_time: time,
+                items: items,
+                total_sum: totalSum
+            };
 
-            if (response.ok) {
-                alert("Buyurtmangiz qabul qilindi! Rahmat.");
-                tg.close();
-            } else {
-                alert("Xatolik yuz berdi. Qayta urinib ko'ring.");
-            }
+            tg.sendData(JSON.stringify(data));
         }
-
-        fetchProducts();
     </script>
 </body>
 </html>
