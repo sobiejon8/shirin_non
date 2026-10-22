@@ -1,26 +1,36 @@
 import os
 import asyncio
+from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
 
-# bot.py faylingizdan bot va dp larni import qilamiz
+# Loyiha ildiz papkasini aniqlash
+BASE_DIR = Path(__file__).resolve().parent
+
+# bot.py faylidan import
 from bot import bot, dp
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # FastAPI ishga tushganda bot pollingni orqa fonda yurgizish
-    asyncio.create_task(dp.start_polling(bot))
+    # Bot pollingni orqa fonda yurgizish
+    polling_task = asyncio.create_task(dp.start_polling(bot))
     yield
     # Server to'xtaganda bot seansini yopish
+    polling_task.cancel()
     await bot.session.close()
 
 app = FastAPI(lifespan=lifespan)
 
-# Statik fayllar va shablonlar
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+# Statik va Templates papkalarini ulash
+static_dir = BASE_DIR / "static"
+templates_dir = BASE_DIR / "templates"
+
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+templates = Jinja2Templates(directory=str(templates_dir))
 
 @app.get("/")
 async def read_root(request: Request):
