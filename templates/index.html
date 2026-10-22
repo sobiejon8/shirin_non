@@ -167,7 +167,12 @@
                 total_sum: totalSum
             };
 
-            tg.sendData(JSON.stringify(data));
+            try {
+                tg.sendData(JSON.stringify(data));
+                tg.close();
+            } catch (e) {
+                alert("Buyurtma yuborildi!");
+            }
         }
     </script>
 </body>
