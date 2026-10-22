@@ -1,49 +1,49 @@
-import os
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from database import SessionLocal
-from models import Order
+import json
+from aiogram import Bot, Dispatcher, F, types
+from aiogram.filters import CommandStart
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8253775904:AAHJxL6TvDmDr1stpFlMyVT4153FFiWcOWI")
-ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID", "7565714864")
+BOT_TOKEN = "8253775904:AAHJxL6TvDmDr1stpFlMyVT4153FFiWcOWI"  # Bu yerga bot tokeningiz
+ADMIN_ID = 7565714864  # 👈 BU YERGA O'ZINGIZNING TELEGRAM ID'INGIZNI YOZING
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
-def get_order_keyboard(order_id: int):
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text="🟢 Qabul qilindi", callback_data=f"status:{order_id}:🟢 Qabul qilindi"),
-            InlineKeyboardButton(text="🍞 Yopilmoqda", callback_data=f"status:{order_id}:🍞 Yopilmoqda")
-        ],
-        [
-            InlineKeyboardButton(text="🚚 Yo'lda", callback_data=f"status:{order_id}:🚚 Yo'lda"),
-            InlineKeyboardButton(text="✅ Topshirildi", callback_data=f"status:{order_id}:✅ Topshirildi")
-        ]
-    ])
+@dp.message(CommandStart())
+async def start_cmd(message: types.Message):
+    await message.answer("Xush kelibsiz! WebApp orqali buyurtma berishingiz mumkin.")
 
 
-@dp.callback_query(F.data.startswith("status:"))
-async def process_status_change(callback: types.CallbackQuery):
-    _, order_id, new_status = callback.data.split(":")
+@dp.message(F.web_app_data)
+async def handle_web_app_data(message: types.Message):
+    try:
+        data = json.loads(message.web_app_data.data)
 
-    db = SessionLocal()
-    order = db.query(Order).filter(Order.id == int(order_id)).first()
-    if order:
-        order.status = new_status
-        db.commit()
+        # Buyurtma matnini shakllantirish
+        text = f"🍞 **YANGI BUYURTMA!**\n\n"
+        text += f"👤 **Mijoz / Do'kon:** {data.get('client_name')}\n"
+        text += f"📞 **Telefon:** {data.get('phone')}\n"
+        text += f"⏰ **Yetkazish vaqti:** {data.get('delivery_time')}\n\n"
+        text += "📦 **Buyurtma qilingan mahsulotlar:**\n"
 
-        text_lines = callback.message.text.split("\n")
-        updated_text = []
-        for line in text_lines:
-            if line.startswith("Status:"):
-                updated_text.append(f"Status: {new_status}")
-            else:
-                updated_text.append(line)
+        for item in data.get('items', []):
+            text += f"• {item['name']} — {item['count']} ta ({item['sum']:,} so'm)\n"
 
-        await callback.message.edit_text("\n".join(updated_text), reply_markup=get_order_keyboard(int(order_id)))
-        await callback.answer(f"Status '{new_status}'ga o'zgartirildi!")
-    else:
-        await callback.answer("Buyurtma topilmadi!", show_alert=True)
-    db.close()
+        text += f"\n💰 **Jami summa:** {data.get('total_sum', 0):,} so'm"
+
+        # 1. Mijozning o'ziga tasdiqlash xabarini yuborish
+        await message.answer(f"✅ **Buyurtmangiz qabul qilindi!**\n\n{text}")
+
+        # 2. XADMIN'GA (Sizga) Telegram orqali xabar yuborish 🚀
+        if ADMIN_ID and ADMIN_ID != 123456789:
+            await bot.send_message(chat_id=ADMIN_ID, text=text, parse_mode="Markdown")
+
+    except Exception as e:
+        await message.answer("Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.")
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(dp.start_polling(bot))
