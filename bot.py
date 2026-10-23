@@ -11,6 +11,15 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
+def get_order_keyboard():
+    builder = InlineKeyboardBuilder()
+    builder.button(text="✅ Qabul qildim", callback_data="status_accepted")
+    builder.button(text="📦 Topshirdim (Pul olinmadi)", callback_data="status_unpaid")
+    builder.button(text="💵 Pulni oldim", callback_data="status_paid")
+    builder.adjust(1) # Har bir tugma alohida qatorda turishi uchun
+    return builder.as_markup()
+
+
 @dp.message(CommandStart())
 async def start_cmd(message: types.Message):
     builder = InlineKeyboardBuilder()
