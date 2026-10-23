@@ -1,4 +1,4 @@
-import os
+﻿import os
 import asyncio
 from pathlib import Path
 from fastapi import FastAPI, Request
@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from typing import List
 
 BASE_DIR = Path(__file__).resolve().parent
-from bot import bot, dp, ADMIN_ID
+from bot import bot, dp, ADMIN_ID, get_order_keyboard
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,7 +28,6 @@ if static_dir.exists():
 
 templates = Jinja2Templates(directory=str(templates_dir))
 
-# Pydantic orqali kelayotgan ma'lumotni tekshirish
 class OrderItem(BaseModel):
     name: str
     count: int
@@ -46,7 +45,6 @@ class OrderRequest(BaseModel):
 async def read_root(request: Request):
     return templates.TemplateResponse(request, "index.html")
 
-# Saytdan buyurtmani qabul qilib, adminga Telegram orqali yuboruvchi API
 @app.post("/api/order")
 async def create_order(order: OrderRequest):
     try:
@@ -60,10 +58,16 @@ async def create_order(order: OrderRequest):
             text += f"• {item.name} — {item.count} ta ({item.sum:,} so'm)\n"
 
         text += f"\n💰 <b>Jami summa:</b> {order.total_sum:,} so'm"
+        text += f"\n\n📌 <b>Holati:</b> ⏳ Yangi buyurtma"
 
         if ADMIN_ID:
-            await bot.send_message(chat_id=ADMIN_ID, text=text, parse_mode="HTML")
-            print("Adminga muvaffaqiyatli xabar yuborildi!")
+            await bot.send_message(
+                chat_id=ADMIN_ID, 
+                text=text, 
+                parse_mode="HTML",
+                reply_markup=get_order_keyboard()
+            )
+            print("Adminga tugmalar bilan xabar yuborildi!")
 
         return {"status": "success"}
     except Exception as e:
