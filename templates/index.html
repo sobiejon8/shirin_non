@@ -126,7 +126,7 @@
             document.getElementById('total_price').innerText = total.toLocaleString('uz-UZ') + " so'm";
         }
 
-        function sendOrder() {
+        async function sendOrder() {
             const name = document.getElementById('client_name').value.trim();
             const phone = document.getElementById('client_phone').value.trim();
             const time = document.getElementById('delivery_time').value.trim();
@@ -168,10 +168,28 @@
             };
 
             try {
+                const response = await fetch('/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert("✅ Buyurtmangiz muvaffaqiyatli qabul qilindi!");
+                    try { tg.close(); } catch(e) {}
+                    window.location.reload();
+                    return;
+                }
+            } catch (e) {
+                console.log("Backend API error, trying tg.sendData", e);
+            }
+
+            try {
                 tg.sendData(JSON.stringify(data));
                 tg.close();
             } catch (e) {
-                alert("Buyurtma yuborildi!");
+                alert("Buyurtmangiz qayta ishlanmoqda!");
             }
         }
     </script>
